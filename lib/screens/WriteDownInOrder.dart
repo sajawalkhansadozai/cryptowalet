@@ -114,31 +114,29 @@ class _WriteDownInOrderState extends State {
               ),
             ),
             SizedBox(height: screenHeight * 0.05),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.all(screenWidth * 0.04),
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 245, 242, 242),
-                  borderRadius: BorderRadius.circular(screenWidth * 0.02),
-                ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: List.generate(5, (rowIndex) {
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: screenHeight * 0.015),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: List.generate(3, (colIndex) {
-                            return buildRecoveryContainer(
-                              repeatedText,
-                              screenWidth,
-                              screenHeight,
-                            );
-                          }),
-                        ),
-                      );
-                    }),
-                  ),
+            Container(
+              padding: EdgeInsets.all(screenWidth * 0.04),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 245, 242, 242),
+                borderRadius: BorderRadius.circular(screenWidth * 0.02),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: List.generate(5, (rowIndex) {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: screenHeight * 0.015),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: List.generate(3, (colIndex) {
+                          return buildRecoveryContainer(
+                            repeatedText,
+                            screenWidth,
+                            screenHeight,
+                          );
+                        }),
+                      ),
+                    );
+                  }),
                 ),
               ),
             ),

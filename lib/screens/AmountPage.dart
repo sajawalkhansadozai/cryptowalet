@@ -1,3 +1,4 @@
+import 'package:cryptowalet/screens/SwapPage.dart';
 import 'package:flutter/material.dart';
 
 class AmountPage extends StatelessWidget {
@@ -16,7 +17,11 @@ class AmountPage extends StatelessWidget {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () => Navigator.pop(context),
+                    onPressed:
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SwapPage()),
+                        ),
                     icon: const Icon(Icons.arrow_back),
                   ),
                   const SizedBox(width: 10),

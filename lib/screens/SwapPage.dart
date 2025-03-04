@@ -1,4 +1,5 @@
 import 'package:cryptowalet/screens/AmountPage.dart';
+import 'package:cryptowalet/screens/OpenWallet.dart';
 import 'package:flutter/material.dart';
 
 class SwapPage extends StatelessWidget {
@@ -17,7 +18,11 @@ class SwapPage extends StatelessWidget {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () => Navigator.pop(context),
+                    onPressed:
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (Context) => Openwallet()),
+                        ),
                     icon: const Icon(Icons.arrow_back),
                   ),
                   const SizedBox(width: 10),
