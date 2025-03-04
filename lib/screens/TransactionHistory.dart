@@ -1,5 +1,3 @@
-import 'package:cryptowalet/screens/ImportCustomToken.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class TransactionHistory extends StatelessWidget {
@@ -25,41 +23,37 @@ class TransactionHistory extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(Icons.arrow_back, size: 28), // Back button
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: Icon(Icons.arrow_back, size: 28),
+                          ),
+
                           Expanded(
-                            child: RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(
-                                text: "Transaction History", // The main text
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: " ETH", // Additional styled text
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.grey,
-                                      decoration: TextDecoration.underline,
-                                    ),
-                                    recognizer:
-                                        TapGestureRecognizer()
-                                          ..onTap = () {
-                                            // Navigate to ImportCustomToken screen
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder:
-                                                    (context) =>
-                                                        ImportCustomToken(),
-                                              ),
-                                            );
-                                          },
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: RichText(
+                                textAlign: TextAlign.start,
+                                text: TextSpan(
+                                  text: "Transaction History", // The main text
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
                                   ),
-                                ],
+                                  children: [
+                                    TextSpan(
+                                      text: " ETH", // Additional styled text
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.grey,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -84,12 +78,12 @@ class TransactionHistory extends StatelessWidget {
 /// Token Component
 Widget buildToken(BuildContext context) {
   return Padding(
-    padding: const EdgeInsets.all(30),
+    padding: const EdgeInsets.all(10),
     child: Container(
       height: 80,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.grey.shade300,
+        color: Colors.grey[200],
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(

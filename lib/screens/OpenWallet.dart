@@ -20,53 +20,65 @@ class _OpenwalletState extends State<Openwallet> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: Builder(
-            builder:
-                (context) => IconButton(
-                  icon: const Icon(Icons.menu, color: Colors.black, size: 30),
-                  onPressed: () {
-                    Scaffold.of(context).openDrawer(); // Open the drawer
-                  },
-                ),
-          ),
-        ),
         drawer: Drawer(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment:
+                CrossAxisAlignment.center, // Center content horizontally
             children: [
-              UserAccountsDrawerHeader(
-                decoration: const BoxDecoration(),
-                accountName: const Text(
-                  "Account No 1",
+              // Custom Profile Section (Centered)
+              Padding(
+                padding: const EdgeInsets.only(top: 10, right: 200),
+                child: Text(
+                  "EOONIA",
                   style: TextStyle(
-                    fontSize: 30,
+                    color: Colors.black,
+                    fontSize: 25,
                     fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(68, 217, 162, 1.0),
                   ),
                 ),
-                accountEmail: const Text(
-                  "esrfg543.....",
-                  style: TextStyle(color: Color.fromARGB(255, 179, 172, 172)),
-                ),
-                currentAccountPicture: const CircleAvatar(
-                  backgroundImage: AssetImage("assets/profile_image.png"),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 30,
+                  bottom: 20,
+                ), // Add spacing
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 50, // Adjust size as needed
+                      backgroundImage: AssetImage("assets/profile_image.png"),
+                    ),
+                    const SizedBox(height: 10), // Space between image and text
+                    Text(
+                      "Account No 1",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(68, 217, 162, 1.0),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ), // Space between account name and email
+                    Text(
+                      "esrfg 543.....\n0USD",
+                      style: TextStyle(fontSize: 14, color: Colors.black),
+                    ),
+                  ],
                 ),
               ),
-              const Spacer(), // Push content to the bottom
-              const SizedBox(height: 30),
+
               ListTile(
-                leading: const Icon(Icons.info),
+                leading: const Icon(Icons.info_outline),
                 title: const Text('Wallet'),
                 onTap: () {
                   Navigator.pop(context);
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.report),
+                leading: const Icon(Icons.assignment_outlined),
                 title: const Text('Transaction History'),
                 onTap: () {
                   Navigator.push(
@@ -78,29 +90,24 @@ class _OpenwalletState extends State<Openwallet> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.share),
+                leading: const Icon(Icons.share_outlined),
                 title: const Text('Share Public Address'),
                 onTap: () {
                   Navigator.pop(context);
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.view_agenda),
+                leading: const Icon(Icons.remove_red_eye_outlined),
                 title: const Text('View on Etherson'),
                 onTap: () {
                   Navigator.pop(context);
                 },
               ),
-              SizedBox(height: 100),
+              const Spacer(), // Push remaining content to the bottom
+              const SizedBox(height: 100), // Add spacing
+
               ListTile(
-                leading: const Icon(Icons.info),
-                title: const Text('Get Detail'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.settings),
+                leading: const Icon(Icons.settings_outlined),
                 title: const Text('Settings'),
                 onTap: () {
                   Navigator.push(
@@ -112,64 +119,138 @@ class _OpenwalletState extends State<Openwallet> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.logout, color: Colors.white),
-                title: const Text(
-                  'Logout',
-                  style: TextStyle(color: Colors.white),
-                ),
-                tileColor: Colors.red,
+                leading: const Icon(Icons.info_outline),
+                title: const Text('Get help'),
                 onTap: () {
-                  Navigator.pop(context); // Close the drawer
+                  Navigator.pop(context);
                 },
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.redAccent,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ListTile(
+                    leading: const Icon(Icons.logout, color: Colors.white),
+                    title: const Text(
+                      'Logout',
+                      style: TextStyle(color: Colors.white),
+                    ),
+
+                    onTap: () {
+                      Navigator.pop(context); // Close the drawer
+                    },
+                  ),
+                ),
               ),
             ],
           ),
         ),
-        body: ListView(
+        body: Stack(
           children: [
-            buildWalletHeader(),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            ListView(
               children: [
-                ActionButton(
-                  icon: Icons.arrow_downward,
-                  text: "Receive",
-                  onTap: () {
-                    showReceiveDialog(context);
-                  },
+                buildWalletHeader(),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ActionButton(
+                      icon: Icons.arrow_downward,
+                      text: "Receive",
+                      onTap: () {
+                        showReceiveDialog(context);
+                      },
+                    ),
+                    ActionButton(
+                      icon: Icons.arrow_upward,
+                      text: "Send",
+                      navigationPage: SendPage(),
+                    ),
+                    ActionButton(
+                      icon: Icons.swap_vert,
+                      text: "Swap",
+                      navigationPage: const SwapPage(),
+                    ),
+                  ],
                 ),
-                ActionButton(
-                  icon: Icons.arrow_upward,
-                  text: "Send",
-                  navigationPage: SendPage(),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    buildTabButton(index: 0, text: "Token"),
+                    buildTabButton(index: 1, text: "Collection"),
+                  ],
                 ),
-                ActionButton(
-                  icon: Icons.swap_vert,
-                  text: "Swap",
-                  navigationPage: const SwapPage(),
+                const SizedBox(height: 10),
+                IndexedStack(
+                  index: selectedTabIndex,
+                  children: [
+                    buildToken(context), // Token Tab
+                    buildCollection(context), // Collection Tab
+                  ],
                 ),
+                const SizedBox(height: 30),
+                if (selectedTabIndex == 0)
+                  Center(child: buildLastText(context)),
+                const SizedBox(height: 20),
               ],
             ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                buildTabButton(index: 0, text: "Token"),
-                buildTabButton(index: 1, text: "Collection"),
-              ],
+            // Positioned Text "Ethereum" in the Top-Right Corner
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  right: 30,
+                  top: 30,
+                ), // Add some padding for spacing
+                child: Container(
+                  height: 32,
+                  width: 93,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Ethereum",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(68, 217, 162, 1.0),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
-            const SizedBox(height: 10),
-            IndexedStack(
-              index: selectedTabIndex,
-              children: [
-                buildToken(context), // Token Tab
-                buildCollection(context), // Collection Tab
-              ],
+            // Positioned Menu Button in the Top-Left Corner
+            Positioned(
+              top: 0,
+              left: 0,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  top: 30,
+                ), // Add some padding for spacing
+                child: Builder(
+                  builder:
+                      (context) => IconButton(
+                        icon: const Icon(
+                          Icons.menu,
+                          size: 30,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer(); // Open the drawer
+                        },
+                      ),
+                ),
+              ),
             ),
-            const SizedBox(height: 30),
-            if (selectedTabIndex == 0) Center(child: buildLastText(context)),
-            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -178,48 +259,74 @@ class _OpenwalletState extends State<Openwallet> {
 
   /// ✅ **Reusable Function to Show Receive Dialog**
   void showReceiveDialog(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return Dialog(
+          backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(screenWidth * 0.02),
           ),
           child: SizedBox(
             width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.5,
+            height: screenHeight * 0.5,
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(screenWidth * 0.05),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                  Text(
                     "Receive",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: screenWidth * 0.08,
+                    ),
                   ),
-                  const Text("Scan QR code to Receive your payment"),
-                  Image.asset("assets/QR.png"),
-                  const SizedBox(height: 20),
+                  SizedBox(height: screenHeight * 0.01),
+                  Text(
+                    "Scan QR code to Receive your payment",
+                    style: TextStyle(fontSize: screenWidth * 0.04),
+                  ),
+                  SizedBox(height: screenHeight * 0.02),
+                  Image.asset(
+                    "assets/QR.png",
+                    width: screenWidth * 0.5,
+                    height: screenWidth * 0.5,
+                  ),
+                  SizedBox(height: screenHeight * 0.02),
                   Stack(
                     children: [
                       Container(
                         width: double.infinity,
-                        height: 40,
-                        color: const Color.fromARGB(255, 216, 211, 211),
+                        height: screenHeight * 0.05,
+                        color: Colors.grey[200],
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text("0xd4rdc......"),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: screenWidth * 0.02,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "0xd4rdc......",
+                                style: TextStyle(fontSize: screenWidth * 0.04),
+                              ),
+                              Row(
+                                children: [
+                                  Icon(Icons.copy, size: screenWidth * 0.06),
+                                  SizedBox(width: screenWidth * 0.02),
+                                  Icon(Icons.share, size: screenWidth * 0.06),
+                                ],
+                              ),
+                            ],
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(left: 150),
-                            child: Icon(Icons.copy),
-                          ),
-                          const Icon(Icons.share),
-                        ],
+                        ),
                       ),
                     ],
                   ),
@@ -266,6 +373,22 @@ class _OpenwalletState extends State<Openwallet> {
                   color: Colors.white,
                 ),
               ),
+              const Text(
+                "dfg456.......",
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const Text(
+                "0 USD",
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
         ),
@@ -306,22 +429,73 @@ class _OpenwalletState extends State<Openwallet> {
     );
   }
 
-  /// ✅ **Token Component**
   Widget buildToken(BuildContext context) {
-    return const Center(child: Text("Token List Placeholder"));
+    return Center(
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 40, right: 40),
+            child: Container(
+              width: double.infinity,
+              height: 60,
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 10, left: 50),
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundImage: AssetImage("assets/profile_image.png"),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "0.00THET \n0USD",
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 160),
+                child: Icon(Icons.chevron_right, color: Colors.grey),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   /// ✅ **Collection Component**
   Widget buildCollection(BuildContext context) {
     return Center(
-      child: TextButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const ImportNFT()),
-          );
-        },
-        child: const Text("Import NFT"),
+      child: Column(
+        children: [
+          Text(
+            "Don't you See your NFT??",
+            style: TextStyle(color: const Color.fromARGB(255, 211, 204, 204)),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ImportNFT()),
+              );
+            },
+            child: const Text(
+              "Import NFT",
+              style: TextStyle(
+                color: Color.fromRGBO(68, 217, 162, 1.0),
+                fontSize: 10,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -329,14 +503,25 @@ class _OpenwalletState extends State<Openwallet> {
   /// ✅ **Import Token Text**
   Widget buildLastText(BuildContext context) {
     return Center(
-      child: TextButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ImportToken()),
-          );
-        },
-        child: const Text("Import Token"),
+      child: Column(
+        children: [
+          Text(
+            "Don't you see your token??",
+            style: TextStyle(color: const Color.fromARGB(255, 211, 204, 204)),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ImportToken()),
+              );
+            },
+            child: const Text(
+              "Import Token",
+              style: TextStyle(color: Color.fromRGBO(68, 217, 162, 1.0)),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -370,11 +555,34 @@ class ActionButton extends StatelessWidget {
               );
             }
           },
-      child: Column(
-        children: [
-          Icon(icon, size: 30, color: const Color.fromRGBO(68, 217, 162, 1.0)),
-          Text(text),
-        ],
+      child: Container(
+        width: 80, // Set the width of the square box
+        height: 80, // Set the height of the square box
+        decoration: BoxDecoration(
+          color: Colors.grey[200], // Background color of the box
+          borderRadius: BorderRadius.circular(
+            10,
+          ), // Optional: Add rounded corners
+        ),
+        child: Column(
+          mainAxisAlignment:
+              MainAxisAlignment.center, // Center content vertically
+          children: [
+            Icon(
+              icon,
+              size: 30,
+              color: const Color.fromRGBO(68, 217, 162, 1.0),
+            ),
+            const SizedBox(height: 5), // Add spacing between icon and text
+            Text(
+              text,
+              textAlign: TextAlign.center, // Ensure text is centered
+              style: const TextStyle(
+                fontSize: 12,
+              ), // Adjust font size if needed
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -2,28 +2,41 @@ import 'package:flutter/material.dart';
 
 /// 🔹 Builds the header with a back button and title
 Widget buildHeader(BuildContext context) {
+  // Get screen dimensions for responsiveness
+  final screenWidth = MediaQuery.of(context).size.width;
+  final screenHeight = MediaQuery.of(context).size.height;
+
   return Row(
     children: [
       Padding(
-        padding: const EdgeInsets.only(top: 20, left: 20),
+        padding: EdgeInsets.only(
+          top: screenHeight * 0.03, // 3% of screen height
+          left: screenWidth * 0.05, // 5% of screen width
+        ),
         child: ElevatedButton(
           onPressed: () => Navigator.pop(context),
           style: ElevatedButton.styleFrom(
             shape: const CircleBorder(),
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(screenWidth * 0.03), // Responsive padding
             backgroundColor: Colors.white,
             elevation: 0,
           ),
-          child: const Icon(Icons.chevron_left, color: Colors.black, size: 30),
+          child: Icon(
+            Icons.chevron_left,
+            color: Colors.black,
+            size: screenWidth * 0.07, // Responsive icon size
+          ),
         ),
       ),
-      const SizedBox(width: 10),
-      const Padding(
-        padding: EdgeInsets.only(top: 20),
+      SizedBox(width: screenWidth * 0.02), // 2% spacing
+      Padding(
+        padding: EdgeInsets.only(
+          top: screenHeight * 0.03,
+        ), // 3% of screen height
         child: Text(
           "Create New Wallet",
           style: TextStyle(
-            fontSize: 18,
+            fontSize: screenWidth * 0.05, // Responsive font size
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
@@ -34,9 +47,19 @@ Widget buildHeader(BuildContext context) {
 }
 
 /// 🔹 Builds the stepper UI
-Widget buildStepper(int currentStep, Function(int) onStepTapped) {
+Widget buildStepper(
+  BuildContext context,
+  int currentStep,
+  Function(int) onStepTapped,
+) {
+  // Get screen dimensions for responsiveness
+  final screenWidth = MediaQuery.of(context).size.width;
+  final screenHeight = MediaQuery.of(context).size.height;
+
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 40),
+    padding: EdgeInsets.symmetric(
+      horizontal: screenWidth * 0.1,
+    ), // 10% horizontal padding
     child: Stack(
       alignment: Alignment.center,
       children: [
@@ -45,7 +68,7 @@ Widget buildStepper(int currentStep, Function(int) onStepTapped) {
           children: List.generate(2, (index) {
             return Expanded(
               child: Container(
-                height: 4,
+                height: screenHeight * 0.006, // 0.6% of screen height
                 color:
                     currentStep > index
                         ? const Color.fromRGBO(68, 217, 162, 1.0)
@@ -61,8 +84,8 @@ Widget buildStepper(int currentStep, Function(int) onStepTapped) {
             return GestureDetector(
               onTap: () => onStepTapped(index),
               child: Container(
-                width: 30,
-                height: 30,
+                width: screenWidth * 0.08, // 8% of screen width
+                height: screenWidth * 0.08, // 8% of screen width
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
@@ -70,7 +93,7 @@ Widget buildStepper(int currentStep, Function(int) onStepTapped) {
                         currentStep >= index
                             ? const Color.fromRGBO(68, 217, 162, 1.0)
                             : Colors.grey,
-                    width: 3,
+                    width: screenWidth * 0.008, // Responsive border width
                   ),
                   color:
                       currentStep > index
@@ -84,17 +107,17 @@ Widget buildStepper(int currentStep, Function(int) onStepTapped) {
                 ),
                 child:
                     currentStep > index
-                        ? const Icon(
+                        ? Icon(
                           Icons.check,
                           color: Colors.white,
-                          size: 20,
+                          size: screenWidth * 0.04, // Responsive icon size
                         ) // Checkmark for completed steps
                         : currentStep == index
                         ? Center(
                           // Active step - with small dot
                           child: Container(
-                            width: 8,
-                            height: 8,
+                            width: screenWidth * 0.02, // 2% of screen width
+                            height: screenWidth * 0.02, // 2% of screen width
                             decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               color: Color.fromRGBO(68, 217, 162, 1.0),

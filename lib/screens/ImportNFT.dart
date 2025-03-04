@@ -5,36 +5,46 @@ class ImportNFT extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen dimensions for responsiveness
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back),
           onPressed: () {
-            // Navigate back to the previous screen
-            Navigator.pop(context);
+            Navigator.pop(context); // Navigate back
           },
         ),
-        title: const Text("Import NFT"),
+        title: Text(
+          "Import NFT",
+          style: TextStyle(
+            fontSize: screenWidth * 0.05,
+          ), // Responsive font size
+        ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.symmetric(
+          horizontal: screenWidth * 0.05,
+        ), // 5% horizontal padding
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 30), // Spacing
+            SizedBox(height: screenHeight * 0.04), // 4% of screen height
             // Token Name TextField
-            _buildTextField("Token Name"),
-            const SizedBox(height: 30), // Spacing
+            _buildTextField("Token Name", screenWidth, screenHeight),
+            SizedBox(height: screenHeight * 0.04), // 4% of screen height
             // Token Symbol TextField
-            _buildTextField("Token Symbol"),
-            const SizedBox(height: 30), // Spacing
+            _buildTextField("Token Symbol", screenWidth, screenHeight),
+            SizedBox(height: screenHeight * 0.04), // 4% of screen height
             // Contract Address TextField
-            _buildTextField("Contract Address"),
-            const SizedBox(height: 30), // Spacing
+            _buildTextField("Contract Address", screenWidth, screenHeight),
+            SizedBox(height: screenHeight * 0.04), // 4% of screen height
             // Import Button (Full Width)
             SizedBox(
               width: double.infinity,
-              height: 50,
+              height: screenHeight * 0.07, // 7% of screen height
               child: ElevatedButton(
                 onPressed: () {
                   // Perform import action here
@@ -44,20 +54,28 @@ class ImportNFT extends StatelessWidget {
                   backgroundColor: const Color.fromRGBO(68, 217, 162, 1.0),
                   foregroundColor: Colors.white,
                   elevation: 4,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  padding: EdgeInsets.symmetric(
+                    vertical: screenHeight * 0.015,
+                  ), // Responsive padding
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(
+                      screenWidth * 0.02,
+                    ), // Responsive border radius
                   ),
                 ),
-                child: const Text("Import", style: TextStyle(fontSize: 16)),
+                child: Text(
+                  "Import",
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.04,
+                  ), // Responsive font size
+                ),
               ),
             ),
-
-            const SizedBox(height: 20), // Spacing
+            SizedBox(height: screenHeight * 0.03), // 3% of screen height
             // Cancel Button (Full Width)
             SizedBox(
               width: double.infinity,
-              height: 50,
+              height: screenHeight * 0.07, // 7% of screen height
               child: ElevatedButton(
                 onPressed: () {
                   // Perform cancel action here
@@ -67,16 +85,24 @@ class ImportNFT extends StatelessWidget {
                   backgroundColor: Colors.white,
                   foregroundColor: Colors.black,
                   elevation: 4,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  padding: EdgeInsets.symmetric(
+                    vertical: screenHeight * 0.015,
+                  ), // Responsive padding
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(
+                      screenWidth * 0.02,
+                    ), // Responsive border radius
                   ),
                 ),
-                child: const Text("Cancel", style: TextStyle(fontSize: 16)),
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.04,
+                  ), // Responsive font size
+                ),
               ),
             ),
-
-            const SizedBox(height: 40), // Spacing
+            SizedBox(height: screenHeight * 0.05), // 5% of screen height
           ],
         ),
       ),
@@ -84,19 +110,32 @@ class ImportNFT extends StatelessWidget {
   }
 
   /// ✅ Reusable function to build text fields
-  Widget _buildTextField(String hintText) {
+  Widget _buildTextField(
+    String hintText,
+    double screenWidth,
+    double screenHeight,
+  ) {
     return Container(
-      height: 80,
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      height: screenHeight * 0.1, // 10% of screen height
+      padding: EdgeInsets.symmetric(
+        horizontal: screenWidth * 0.03,
+      ), // 3% horizontal padding
       decoration: BoxDecoration(
         color: Colors.grey[200], // Light grey background
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(
+          screenWidth * 0.02,
+        ), // Responsive border radius
       ),
       child: TextField(
         decoration: InputDecoration(
           hintText: hintText,
+          hintStyle: TextStyle(
+            fontSize: screenWidth * 0.04,
+          ), // Responsive font size
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(vertical: 14),
+          contentPadding: EdgeInsets.symmetric(
+            vertical: screenHeight * 0.015,
+          ), // Responsive padding
         ),
       ),
     );

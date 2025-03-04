@@ -10,151 +10,157 @@ class WelcomeScreen extends StatefulWidget {
   State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
 
-// Common button style function
-ButtonStyle commonButtonStyle({
-  required Color backgroundColor,
-  required Color foregroundColor,
-}) {
-  return ElevatedButton.styleFrom(
-    backgroundColor: backgroundColor,
-    foregroundColor: foregroundColor,
-    elevation: 10,
-    shadowColor: Colors.black,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-  );
-}
-
 class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: const Color.fromRGBO(68, 217, 162, 1.0),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 50, left: 30),
-            child: RichText(
-              text: const TextSpan(
-                children: [
-                  TextSpan(
-                    text: "Welcome Back\n",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextSpan(
-                    text: "Please Login to your Account using \nyour password",
-                    style: TextStyle(color: Colors.white70, fontSize: 14),
-                  ),
-                ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                top: screenHeight * 0.05,
+                left: screenWidth * 0.05,
               ),
-            ),
-          ),
-          const SizedBox(height: 70),
-          // White Card below the text
-          Expanded(
-            child: Container(
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "Welcome Back\n",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: screenWidth * 0.08,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                      text:
+                          "Please Login to your Account using \nyour password",
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: screenWidth * 0.035,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              padding: const EdgeInsets.all(20),
+            ),
+            SizedBox(height: screenHeight * 0.05),
+            Container(
+              width: double.infinity,
+              height:
+                  MediaQuery.of(context).size.height -
+                  screenHeight *
+                      0.1, // Adjust 0.1 based on the height of widgets above
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(screenWidth * 0.05),
+                  topRight: Radius.circular(screenWidth * 0.05),
+                ),
+              ),
+              padding: EdgeInsets.all(screenWidth * 0.05),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 90, left: 10),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: screenHeight * 0.08,
+                      left: screenWidth * 0.02,
+                    ),
                     child: Text(
                       "Enter Password to Unlock",
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: screenWidth * 0.04,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 15),
+                  SizedBox(height: screenHeight * 0.02),
                   TextField(
                     decoration: InputDecoration(
                       labelText: "Password",
-                      labelStyle: const TextStyle(color: Colors.grey),
+                      labelStyle: TextStyle(
+                        color: Colors.grey,
+                        fontSize: screenWidth * 0.035,
+                      ),
                       filled: true,
                       fillColor: Colors.grey[200],
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 15,
-                        vertical: 12,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 0.03,
+                        vertical: screenHeight * 0.015,
                       ),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(screenWidth * 0.02),
                         borderSide: BorderSide.none,
                       ),
                     ),
                     obscureText: true,
                   ),
-                  const SizedBox(height: 100),
-                  // Buttons
+                  SizedBox(height: screenHeight * 0.04),
                   Center(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          width: 300,
-                          height: 55,
-                          child: ElevatedButton(
-                            onPressed:
-                                () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Openwallet(),
-                                  ),
-                                ),
-                            style: commonButtonStyle(
-                              foregroundColor: Colors.white,
-                              backgroundColor: const Color.fromRGBO(
-                                68,
-                                217,
-                                162,
-                                1.0,
-                              ),
+                    child: SizedBox(
+                      width: screenWidth * 0.8,
+                      height: screenHeight * 0.07,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Openwallet(),
                             ),
-                            child: const Text(
-                              "Open Wallet",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromRGBO(
+                            68,
+                            217,
+                            162,
+                            1.0,
+                          ),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              screenWidth * 0.03,
                             ),
                           ),
+                          padding: EdgeInsets.symmetric(
+                            vertical: screenWidth * 0.02,
+                          ),
                         ),
-                        const SizedBox(height: 30),
-
-                        // Checkbox and disclaimer text
-                      ],
+                        child: Text(
+                          "Open Wallet",
+                          style: TextStyle(
+                            fontSize: screenWidth * 0.04,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 90),
-                  // Setup New Wallet Text
+                  SizedBox(height: screenHeight * 0.4),
                   Center(
                     child: RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
                         text:
-                            'Can’t login? You can erase your current wallet and ',
-                        style: const TextStyle(
+                            'Can’t login? You can erase your current wallet and \n',
+                        style: TextStyle(
                           color: Color.fromARGB(255, 201, 195, 195),
-                          fontSize: 14,
+                          fontSize: screenWidth * 0.03,
                         ),
                         children: [
                           TextSpan(
                             text: 'Setup New Wallet',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.green,
+                              fontSize: screenWidth * 0.03,
                               decoration: TextDecoration.underline,
                             ),
                             recognizer:
@@ -176,8 +182,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

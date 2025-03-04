@@ -1,4 +1,5 @@
 import 'package:cryptowalet/screens/ImportCustomToken.dart';
+
 import 'package:cryptowalet/screens/TransactionHistory.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -21,46 +22,50 @@ class SendPage extends StatelessWidget {
                     vertical: 12,
                   ),
                   child: Column(
+                    crossAxisAlignment:
+                        CrossAxisAlignment
+                            .start, // Align all children to the start
                     children: [
                       // ✅ Row for Back Button & Title
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(Icons.arrow_back, size: 28), // Back button
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: Icon(Icons.arrow_back),
+                          ),
                           Expanded(
-                            child: RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(
-                                text: "Send", // The main text
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold, // Bold styling
-                                  color: Colors.black, // Text color
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: " ETH", // Additional styled text
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.grey,
-                                      decoration: TextDecoration.underline,
-                                    ),
-                                    recognizer:
-                                        TapGestureRecognizer()
-                                          ..onTap = () {
-                                            // Navigate to ImportCustomToken screen
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder:
-                                                    (context) =>
-                                                        ImportCustomToken(),
-                                              ),
-                                            );
-                                          },
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: RichText(
+                                textAlign: TextAlign.start,
+                                text: TextSpan(
+                                  text: "Send", // The main text
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold, // Bold styling
+                                    color: Colors.black, // Text color
                                   ),
-                                ],
+                                  children: [
+                                    TextSpan(
+                                      text: " ETH", // Additional styled text
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.grey[200],
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                      recognizer:
+                                          TapGestureRecognizer()
+                                            ..onTap = () {
+                                              // Navigate to ImportCustomToken screen
+                                              Navigator.pop(context);
+                                            },
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -70,37 +75,71 @@ class SendPage extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 20), // Add spacing
-                      Text("From"),
+                      // ✅ "From" Label Aligned to the Left
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: Text(
+                          "From",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10), // Add spacing
                       buildToken(context),
+
                       const SizedBox(height: 20), // Add spacing
-                      Text("To"),
+                      // ✅ "To" Label Aligned to the Left
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: Text(
+                          "To",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
                       const SizedBox(height: 10), // Add spacing
                       // ✅ TextField with Image and Label
-                      CustomTextField(
-                        labelText: "Search public address here",
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            height: 30,
-                            width: 30,
-                            child: Image.asset(
-                              "assets/QR.png", // Ensure this image exists in assets
-                              fit: BoxFit.contain,
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: CustomTextField(
+                          labelText: "Search public address here",
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                              height: 30,
+                              width: 30,
+                              child: Image.asset(
+                                "assets/QR.png", // Ensure this image exists in assets
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
                         ),
                       ),
                       const SizedBox(height: 40),
                       Divider(
-                        color: Colors.grey, // Color of the line
+                        color: Colors.grey[350], // Color of the line
                         thickness: 1, // Thickness of the line
                         height: 20, // Spacing above & below the line
                       ),
                       const SizedBox(height: 20),
+
                       // ✅ Reusable TextFields Below Divider
-                      CustomTextField(labelText: "Token Number"),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30, right: 30),
+                        child: CustomTextField(labelText: "Token Number"),
+                      ),
                       const SizedBox(height: 20),
-                      CustomTextField(labelText: "Token ID"),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30, right: 30),
+                        child: CustomTextField(labelText: "Token ID"),
+                      ),
                       const SizedBox(
                         height: 20,
                       ), // Add spacing before the button
@@ -109,6 +148,7 @@ class SendPage extends StatelessWidget {
                 ),
               ),
             ),
+
             // ✅ Button fixed at the bottom
             Padding(
               padding: const EdgeInsets.all(16), // Padding around the button
@@ -185,7 +225,7 @@ Widget buildToken(BuildContext context) {
       height: 80,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.grey.shade300,
+        color: Colors.grey[200],
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(

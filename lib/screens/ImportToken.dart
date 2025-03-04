@@ -1,50 +1,36 @@
-import 'package:cryptowalet/screens/ImportCustomToken.dart';
 import 'package:flutter/material.dart';
+import 'package:cryptowalet/screens/ImportCustomToken.dart';
 
 class ImportToken extends StatelessWidget {
   const ImportToken({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return SafeArea(
       child: Scaffold(
         body: Stack(
           children: [
-            // ✅ Main Content
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              padding: EdgeInsets.symmetric(
+                horizontal: screenWidth * 0.04,
+                vertical: screenHeight * 0.02,
+              ),
               child: Column(
                 children: [
-                  // ✅ Row for Back Button & Title
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Icon(Icons.arrow_back, size: 28),
-                      Expanded(
-                        child: Text(
-                          "Import Token",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
-                      MediaQuery.of(context).size.width < 350
-                          ? SizedBox.shrink() // Hide button on small screens
-                          : CustomButton(), // Show button on large screens
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-
-                  // ✅ Button (Full width on small screens)
-                  if (MediaQuery.of(context).size.width < 350) CustomButton(),
-
-                  // ✅ Token List (Scrollable)
+                  Header(screenWidth: screenWidth, screenHeight: screenHeight),
+                  SizedBox(height: screenHeight * 0.02),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: 30, // Change as needed
+                      itemCount: 30,
                       itemBuilder: (context, index) {
                         return TokenContainer(
                           text: "Token ${index + 1}",
-                          imagePath: "assets/avatar.png",
+                          imagePath: "assets/QR.png",
+                          screenWidth: screenWidth,
+                          screenHeight: screenHeight,
                         );
                       },
                     ),
@@ -52,13 +38,11 @@ class ImportToken extends StatelessWidget {
                 ],
               ),
             ),
-
-            // ✅ Fixed Bottom Button
             Positioned(
-              bottom: 10,
-              left: 16,
-              right: 16,
-              child: FixedBottomButton(),
+              bottom: screenHeight * 0.02,
+              left: screenWidth * 0.04,
+              right: screenWidth * 0.04,
+              child: FixedBottomButton(screenWidth: screenWidth),
             ),
           ],
         ),
@@ -67,93 +51,175 @@ class ImportToken extends StatelessWidget {
   }
 }
 
-/// ✅ **Reusable Button Widget**
+class Header extends StatelessWidget {
+  final double screenWidth;
+  final double screenHeight;
+
+  const Header({
+    super.key,
+    required this.screenWidth,
+    required this.screenHeight,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: Icon(
+            Icons.chevron_left,
+            size: screenWidth * 0.07,
+            color: Colors.black,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            "Import Token",
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontSize: screenWidth * 0.05,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        if (screenWidth >= 350)
+          CustomButton(screenWidth: screenWidth, screenHeight: screenHeight),
+      ],
+    );
+  }
+}
+
 class CustomButton extends StatelessWidget {
-  const CustomButton({super.key});
+  final double screenWidth;
+  final double screenHeight;
+
+  const CustomButton({
+    super.key,
+    required this.screenWidth,
+    required this.screenHeight,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ImportCustomToken()),
+        );
+      },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color.fromRGBO(68, 217, 162, 1.0),
+        backgroundColor: const Color.fromRGBO(68, 217, 162, 1.0),
         foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        minimumSize: Size(120, 45),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(screenWidth * 0.02),
+        ),
+        minimumSize: Size(screenWidth * 0.3, screenHeight * 0.06),
       ),
-      child: Text("Custom Token", style: TextStyle(fontSize: 14)),
+      child: Text(
+        "Custom Token",
+        style: TextStyle(fontSize: screenWidth * 0.035),
+      ),
     );
   }
 }
 
-/// ✅ **Fixed Bottom Button (Full Width)**
 class FixedBottomButton extends StatelessWidget {
-  const FixedBottomButton({super.key});
+  final double screenWidth;
+
+  const FixedBottomButton({super.key, required this.screenWidth});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: double.infinity, // Full width
+      width: double.infinity, // Keep full width
       child: ElevatedButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ImportCustomToken(),
-            ), // Replace `NextPage` with your target page
-          );
-        },
+        onPressed:
+            () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ImportCustomToken()),
+            ),
         style: ElevatedButton.styleFrom(
-          backgroundColor: Color.fromRGBO(68, 217, 162, 1.0),
+          backgroundColor: const Color.fromRGBO(68, 217, 162, 1.0),
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(screenWidth * 0.02),
           ),
-          padding: EdgeInsets.symmetric(vertical: 14), // Adjust height
+          minimumSize: Size(
+            screenWidth,
+            screenWidth * 0.12,
+          ), // Slightly increased height
+          padding: EdgeInsets.symmetric(
+            vertical: screenWidth * 0.035,
+          ), // Adjusted padding
         ),
         child: Text(
           "Import Token",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: screenWidth * 0.045,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );
   }
 }
 
-/// ✅ **Reusable Token Container**
 class TokenContainer extends StatelessWidget {
   final String text;
   final String imagePath;
+  final double screenWidth;
+  final double screenHeight;
 
   const TokenContainer({
     super.key,
     required this.text,
     required this.imagePath,
+    required this.screenWidth,
+    required this.screenHeight,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
+      height: screenHeight * 0.08,
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 12),
-      margin: EdgeInsets.only(bottom: 10),
+      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+      margin: EdgeInsets.only(bottom: screenHeight * 0.02),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: Colors.white,
+
         border: Border.all(color: Colors.grey, width: 1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(screenWidth * 0.02),
+        boxShadow: [
+          BoxShadow(
+            // ignore: deprecated_member_use
+            color: Colors.black.withOpacity(0.1), // Shadow color
+            spreadRadius: 1, // How much the shadow spreads
+            blurRadius: 4, // Softness of the shadow
+            offset: Offset(
+              0,
+              2,
+            ), // Position of the shadow (horizontal, vertical)
+          ),
+        ],
       ),
       child: Row(
         children: [
           CircleAvatar(
-            radius: 16,
+            radius: screenWidth * 0.04,
             backgroundImage: AssetImage(imagePath),
             backgroundColor: Colors.grey[400],
           ),
-          const SizedBox(width: 10),
+          SizedBox(width: screenWidth * 0.03),
           Text(
             text,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            style: TextStyle(
+              fontSize: screenWidth * 0.04,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ],
       ),

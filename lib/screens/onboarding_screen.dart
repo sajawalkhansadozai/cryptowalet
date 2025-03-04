@@ -15,7 +15,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   bool isLastPage = false;
   int currentIndex = 0;
 
-  // List of titles for each screen
   final List<String> appBarTitles = [
     "Trust By Mission",
     "Safe, Reliable and Superfast",
@@ -24,10 +23,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-    double boxWidth = screenWidth * 0.8;
-    double boxHeight = screenHeight * 0.55;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final boxWidth = screenWidth * 0.8;
+    final boxHeight = screenHeight * 0.55;
 
     return Scaffold(
       appBar: buildAppBar(appBarTitles[currentIndex]),
@@ -67,31 +66,41 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ],
             ),
           ),
-          buildBottomSection(),
+          buildBottomSection(screenWidth, screenHeight),
         ],
       ),
     );
   }
 
-  /// **Function to Build App Bar with Dynamic Title**
   PreferredSizeWidget buildAppBar(String title) {
     return AppBar(
-      title: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: MediaQuery.of(context).size.width * 0.05,
+        ),
+      ),
       centerTitle: true,
       actions: [
         if (!isLastPage)
           TextButton(
             onPressed: () => _controller.jumpToPage(2),
-            child: Text("Skip", style: TextStyle(color: Colors.white)),
+            child: Text(
+              "Skip",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: MediaQuery.of(context).size.width * 0.04,
+              ),
+            ),
           ),
       ],
     );
   }
 
-  /// **Function to Build Bottom Section with SmoothPageIndicator and Button**
-  Widget buildBottomSection() {
+  Widget buildBottomSection(double screenWidth, double screenHeight) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
+      padding: EdgeInsets.only(bottom: screenHeight * 0.02),
       child: Column(
         children: [
           SmoothPageIndicator(
@@ -100,22 +109,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             effect: ExpandingDotsEffect(
               activeDotColor: Color.fromRGBO(68, 217, 162, 1.0),
               dotColor: Colors.grey,
-              dotHeight: 5,
-              dotWidth: 5,
+              dotHeight: screenHeight * 0.007,
+              dotWidth: screenWidth * 0.02,
               expansionFactor: 4,
             ),
           ),
-          SizedBox(height: 20),
+          SizedBox(height: screenHeight * 0.03),
           TextButton(
             onPressed: () {
               if (isLastPage) {
-                // Navigate to StartHome when it's the last page
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => Starthome()),
                 );
               } else {
-                // Move to the next page
                 _controller.nextPage(
                   duration: Duration(milliseconds: 500),
                   curve: Curves.ease,
@@ -125,7 +132,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             child: Text(
               isLastPage ? "Get Started" : "Skip",
               style: TextStyle(
-                fontSize: 20,
+                fontSize: screenWidth * 0.05,
                 color: Color.fromRGBO(68, 217, 162, 1.0),
               ),
             ),

@@ -46,6 +46,7 @@ class Starthome extends StatelessWidget {
                   TextSpan(
                     text: "Import an existing wallet or create a new wallet",
                     style: TextStyle(
+                      // ignore: deprecated_member_use
                       color: Colors.white.withOpacity(0.8),
                       fontSize: 14,
                     ),

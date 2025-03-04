@@ -1,6 +1,7 @@
+import 'package:cryptowalet/screens/CreatePasswordScreen.dart';
 import 'package:cryptowalet/screens/ImportScreen.dart';
-import 'package:cryptowalet/screens/WriteDownInOrder.dart';
-import 'package:cryptowalet/screens/wallet_widgets.dart';
+import 'package:cryptowalet/screens/WriteDownInOrder.dart' as writeDown;
+import 'package:cryptowalet/screens/wallet_widgets.dart' as walletWidgets;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -14,32 +15,49 @@ class SecreteRecoveryPhase extends StatefulWidget {
 class _SecreteRecoveryPhaseState extends State<SecreteRecoveryPhase> {
   int _currentStep = 1; // Step tracking
 
-  void _onStepTapped(int step) {
+  void _nextStep() {
     setState(() {
-      _currentStep = step;
+      if (_currentStep < 2) {
+        _currentStep++;
+      }
     });
   }
 
-  // Function to create a single recovery phrase container
-  Widget buildRecoveryContainer(String text) {
+  void _previousStep() {
+    setState(() {
+      if (_currentStep > 1) {
+        _currentStep--;
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const CreatePasswordScreen()),
+        );
+      }
+    });
+  }
+
+  Widget buildRecoveryContainer(
+    String text,
+    double screenWidth,
+    double screenHeight,
+  ) {
     return Container(
-      height: 45, // Reduced height
-      width: 90, // Reduced width
+      height: screenHeight * 0.06,
+      width: screenWidth * 0.25,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Colors.transparent,
         border: Border.all(
           color: const Color.fromRGBO(68, 217, 162, 1.0),
           width: 2,
         ),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(screenWidth * 0.02),
       ),
       child: Text(
         text,
-        style: const TextStyle(
-          fontSize: 14,
+        style: TextStyle(
+          fontSize: screenWidth * 0.035,
           fontWeight: FontWeight.bold,
-          color: Colors.grey, // Changed text color to blue
+          color: Colors.grey, // Changed text color to grey
         ),
       ),
     );
@@ -47,7 +65,9 @@ class _SecreteRecoveryPhaseState extends State<SecreteRecoveryPhase> {
 
   @override
   Widget build(BuildContext context) {
-    // Sample recovery phrases
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     List<String> recoveryPhrases = [
       "apple",
       "banana",
@@ -67,134 +87,193 @@ class _SecreteRecoveryPhaseState extends State<SecreteRecoveryPhase> {
     ];
 
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildHeader(context), // Ensure this function is implemented elsewhere
-          const SizedBox(height: 20),
-          buildStepper(
-            _currentStep,
-            _onStepTapped,
-          ), // Ensure this function is implemented elsewhere
-          const SizedBox(height: 35),
-          Padding(
-            padding: const EdgeInsets.only(left: 40),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Secret Recovery Phrase",
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  "This is your secret recovery phrase. Write it down\n"
-                  "and save it somewhere safe. Never share it with anyone.",
-                  style: TextStyle(color: Color.fromARGB(255, 201, 195, 195)),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 40),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Container(
-              height: 380, // Adjusted height
-              padding: const EdgeInsets.all(15), // Adjusted inner padding
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 235, 230, 230),
-                borderRadius: BorderRadius.circular(10),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: screenHeight * 0.02),
+              buildHeader(
+                context,
+                _previousStep,
+              ), // Pass _previousStep for back navigation
+              SizedBox(height: screenHeight * 0.03),
+              walletWidgets.buildStepper(
+                context,
+                _currentStep,
+                (int index) {}, // Fixed null error
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(5, (rowIndex) {
-                  return Padding(
-                    padding: const EdgeInsets.only(
-                      bottom: 12,
-                    ), // Spacing between rows
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: List.generate(3, (colIndex) {
-                        int phraseIndex = rowIndex * 3 + colIndex;
-                        return buildRecoveryContainer(
-                          recoveryPhrases[phraseIndex],
-                        );
-                      }),
-                    ),
-                  );
-                }),
-              ),
-            ),
-          ),
-          const SizedBox(height: 80),
-          Center(
-            child: ElevatedButton(
-              onPressed:
-                  () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => WriteDownInOrder()),
-                  ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromRGBO(68, 217, 162, 1.0),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 50,
-                  vertical: 15,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Text(
-                "Continue",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(width: 5), // Add spacing
-                RichText(
-                  text: TextSpan(
-                    text: 'Already have Wallet ',
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 201, 195, 195),
-                      fontSize: 16,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: 'Import Wallet',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green,
-                          decoration: TextDecoration.underline,
-                        ),
-                        recognizer:
-                            TapGestureRecognizer()
-                              ..onTap = () {
-                                // Handle navigation
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (context) =>
-                                            ImportScreen(), // Replace with actual screen
-                                  ),
-                                );
-                              },
+              SizedBox(height: screenHeight * 0.04),
+              Padding(
+                padding: EdgeInsets.only(left: screenWidth * 0.1),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Secret Recovery Phrase",
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.06,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
+                    ),
+                    SizedBox(height: screenHeight * 0.01),
+                    Text(
+                      "This is your secret recovery phrase. Write it down\n"
+                      "and save it somewhere safe. Never share it with anyone.",
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 201, 195, 195),
+                        fontSize: screenWidth * 0.035,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: screenHeight * 0.05),
+              Container(
+                padding: EdgeInsets.all(screenWidth * 0.04),
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 245, 242, 242),
+                  borderRadius: BorderRadius.circular(screenWidth * 0.02),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(5, (rowIndex) {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: screenHeight * 0.02),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: List.generate(3, (colIndex) {
+                          int phraseIndex = rowIndex * 3 + colIndex;
+                          if (phraseIndex < recoveryPhrases.length) {
+                            return buildRecoveryContainer(
+                              recoveryPhrases[phraseIndex],
+                              screenWidth,
+                              screenHeight,
+                            );
+                          } else {
+                            return SizedBox();
+                          }
+                        }),
+                      ),
+                    );
+                  }),
+                ),
+              ),
+              SizedBox(height: screenHeight * 0.03),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    _nextStep();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => writeDown.WriteDownInOrder(),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromRGBO(68, 217, 162, 1.0),
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.1,
+                      vertical: screenHeight * 0.02,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(screenWidth * 0.02),
+                    ),
+                  ),
+                  child: Text(
+                    "Continue",
+                    style: TextStyle(
+                      fontSize: screenWidth * 0.045,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ],
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: screenHeight * 0.04),
+                child: Center(
+                  child: RichText(
+                    text: TextSpan(
+                      text: 'Already have Wallet ',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 201, 195, 195),
+                        fontSize: screenWidth * 0.035,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: 'Import Wallet',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green,
+                            fontSize: screenWidth * 0.035,
+                            decoration: TextDecoration.underline,
+                          ),
+                          recognizer:
+                              TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ImportScreen(),
+                                    ),
+                                  );
+                                },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: screenHeight * 0.04),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Builds the header with a back button and title
+  Widget buildHeader(BuildContext context, VoidCallback onBack) {
+    return Row(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(
+            top: MediaQuery.of(context).size.height * 0.03,
+            left: MediaQuery.of(context).size.width * 0.05,
+          ),
+          child: ElevatedButton(
+            onPressed: onBack, // Trigger the _previousStep logic
+            style: ElevatedButton.styleFrom(
+              shape: const CircleBorder(),
+              padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.03),
+              backgroundColor: Colors.white,
+              elevation: 0,
+            ),
+            child: Icon(
+              Icons.chevron_left,
+              color: Colors.black,
+              size: MediaQuery.of(context).size.width * 0.07,
             ),
           ),
-        ],
-      ),
+        ),
+        SizedBox(width: MediaQuery.of(context).size.width * 0.02),
+        Padding(
+          padding: EdgeInsets.only(
+            top: MediaQuery.of(context).size.height * 0.03,
+          ),
+          child: Text(
+            "Create New Wallet",
+            style: TextStyle(
+              fontSize: MediaQuery.of(context).size.width * 0.05,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

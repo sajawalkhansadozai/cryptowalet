@@ -1,8 +1,7 @@
-import 'package:cryptowalet/screens/AmountPage.dart';
 import 'package:flutter/material.dart';
 
-class SwapPage extends StatelessWidget {
-  const SwapPage({super.key});
+class AmountPage extends StatelessWidget {
+  const AmountPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +21,7 @@ class SwapPage extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   const Text(
-                    "Swap",
+                    "Amount",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -30,13 +29,13 @@ class SwapPage extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 140),
+                    padding: const EdgeInsets.only(left: 120),
                     child: Custombutton(context),
                   ),
                 ],
               ),
               SizedBox(height: 30),
-              buildToken(context, 'Select Token to Swap'),
+              buildToken(context, 'ETH'),
               SizedBox(height: 30),
               Center(
                 child: Text(
@@ -50,8 +49,7 @@ class SwapPage extends StatelessWidget {
               ),
               SizedBox(height: 30),
               // Add other widgets here
-              buildToken(context, 'Select Token'),
-              //fixed at the bottom
+              Center(child: Text("Balance: 0.0ETH")),
               Spacer(),
               Padding(
                 padding: const EdgeInsets.all(16), // Padding around the button
@@ -84,7 +82,7 @@ class SwapPage extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    "Get Quotes", // Button text
+                    "Next", // Button text
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),

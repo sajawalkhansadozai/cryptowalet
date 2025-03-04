@@ -1,4 +1,5 @@
-import 'package:cryptowalet/screens/CreateAccountScreen.dart';
+import 'package:cryptowalet/screens/CreatePasswordScreen.dart';
+import 'package:cryptowalet/screens/ImportToken.dart';
 import 'package:flutter/material.dart';
 
 class ImportScreen extends StatefulWidget {
@@ -11,126 +12,157 @@ class ImportScreen extends StatefulWidget {
 ButtonStyle commonButtonStyle({
   required Color backgroundColor,
   required Color foregroundColor,
+  required double screenWidth,
 }) {
   return ElevatedButton.styleFrom(
     backgroundColor: backgroundColor,
     foregroundColor: foregroundColor,
     elevation: 10,
     shadowColor: Colors.black,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(
+        screenWidth * 0.03,
+      ), // Responsive border radius
+    ),
+    padding: EdgeInsets.symmetric(
+      vertical: screenWidth * 0.02,
+    ), // Responsive padding
   );
 }
 
 class _ImportScreenState extends State<ImportScreen> {
   @override
   Widget build(BuildContext context) {
+    // Get screen dimensions for responsiveness
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: const Color.fromRGBO(68, 217, 162, 1.0),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start, // Align text to the left
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 50, left: 30),
+            padding: EdgeInsets.only(
+              top: screenHeight * 0.05, // 5% of screen height
+              left: screenWidth * 0.05, // 5% of screen width
+            ),
             child: RichText(
-              text: const TextSpan(
+              text: TextSpan(
                 children: [
                   TextSpan(
                     text: "Import Account\n",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 30,
+                      fontSize: screenWidth * 0.08, // Responsive font size
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   TextSpan(
                     text: "Import an existing wallet by entering its details",
-                    style: TextStyle(color: Colors.white70, fontSize: 14),
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: screenWidth * 0.03, // Responsive font size
+                    ),
                   ),
                 ],
               ),
             ),
           ),
-          const SizedBox(height: 70),
-
+          SizedBox(height: screenHeight * 0.05), // 5% of screen height
           // White Card below the text
           Expanded(
             child: Container(
               width: double.infinity,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
+                  topLeft: Radius.circular(
+                    screenWidth * 0.05,
+                  ), // Responsive border radius
+                  topRight: Radius.circular(
+                    screenWidth * 0.05,
+                  ), // Responsive border radius
                 ),
               ),
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(screenWidth * 0.05), // 5% padding
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 30, left: 10),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: screenHeight * 0.03, // 3% of screen height
+                      left: screenWidth * 0.02, // 2% of screen width
+                    ),
                     child: Text(
                       "Import Account Details",
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: screenWidth * 0.04, // Responsive font size
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 15),
+                  SizedBox(height: screenHeight * 0.02), // 2% of screen height
                   TextField(
                     decoration: InputDecoration(
                       labelText: "Secret Recovery Phrase",
-                      labelStyle: const TextStyle(color: Colors.grey),
+                      labelStyle: TextStyle(
+                        color: Colors.grey,
+                        fontSize: screenWidth * 0.035,
+                      ), // Responsive font size
                       filled: true, // Adds a background color
                       fillColor: Colors.grey[200], // Light grey background
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 15,
-                        vertical: 12,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 0.03, // 3% of screen width
+                        vertical: screenHeight * 0.015, // 1.5% of screen height
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(
-                          10,
-                        ), // Rounded edges
+                          screenWidth * 0.02,
+                        ), // Responsive border radius
                         borderSide: BorderSide.none, // No visible border
                       ),
                     ),
                   ),
-                  const SizedBox(height: 15),
+                  SizedBox(height: screenHeight * 0.02), // 2% of screen height
                   TextField(
                     decoration: InputDecoration(
                       labelText: "Your Password",
-                      labelStyle: const TextStyle(color: Colors.grey),
+                      labelStyle: TextStyle(
+                        color: Colors.grey,
+                        fontSize: screenWidth * 0.035,
+                      ), // Responsive font size
                       filled: true, // Adds a background color
                       fillColor: Colors.grey[200], // Light grey background
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 15,
-                        vertical: 12,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 0.03, // 3% of screen width
+                        vertical: screenHeight * 0.015, // 1.5% of screen height
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(
-                          10,
-                        ), // Rounded edges
+                          screenWidth * 0.02,
+                        ), // Responsive border radius
                         borderSide: BorderSide.none, // No visible border
                       ),
                     ),
                   ),
-                  const SizedBox(height: 50),
+                  SizedBox(height: screenHeight * 0.05), // 5% of screen height
                   // Buttons
                   Center(
                     child: Column(
                       children: [
                         SizedBox(
-                          width: 300,
-                          height: 55,
+                          width: screenWidth * 0.8, // 80% of screen width
+                          height: screenHeight * 0.07, // 7% of screen height
                           child: ElevatedButton(
-                            onPressed:
-                                () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ImportScreen(),
-                                  ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ImportToken(),
                                 ),
+                              );
+                            },
                             style: commonButtonStyle(
                               foregroundColor: Colors.white,
                               backgroundColor: const Color.fromRGBO(
@@ -139,26 +171,30 @@ class _ImportScreenState extends State<ImportScreen> {
                                 162,
                                 1.0,
                               ),
+                              screenWidth: screenWidth,
                             ),
-                            child: const Text(
+                            child: Text(
                               "Import Existing",
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize:
+                                    screenWidth * 0.04, // Responsive font size
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 80),
                         SizedBox(
-                          width: 300,
-                          height: 55,
+                          height: screenHeight * 0.08,
+                        ), // 8% of screen height
+                        SizedBox(
+                          width: screenWidth * 0.8, // 80% of screen width
+                          height: screenHeight * 0.07, // 7% of screen height
                           child: ElevatedButton(
                             onPressed: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => CreateWalletScreen(),
+                                  builder: (context) => CreatePasswordScreen(),
                                 ),
                               );
                             },
@@ -178,11 +214,15 @@ class _ImportScreenState extends State<ImportScreen> {
                                         .zero, // No border radius (sharp edges)
                                 side: BorderSide.none, // Removes border
                               ),
+                              padding: EdgeInsets.symmetric(
+                                vertical: screenWidth * 0.02,
+                              ), // Responsive padding
                             ),
-                            child: const Text(
-                              "Create one",
+                            child: Text(
+                              "Create New Wallet",
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize:
+                                    screenWidth * 0.04, // Responsive font size
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
