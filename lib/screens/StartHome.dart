@@ -1,4 +1,4 @@
-import 'package:cryptowalet/screens/CreateAccountScreen.dart';
+import 'package:cryptowalet/screens/CreatePasswordScreen.dart';
 import 'package:cryptowalet/screens/ImportScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -97,7 +97,7 @@ class Starthome extends StatelessWidget {
             Colors.white,
             () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => CreateWalletScreen()),
+              MaterialPageRoute(builder: (context) => CreatePasswordScreen()),
             ),
           ),
         ],

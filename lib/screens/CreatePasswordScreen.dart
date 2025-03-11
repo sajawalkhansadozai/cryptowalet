@@ -242,6 +242,7 @@ class _CreatePasswordScreenState extends State {
             },
             activeColor: const Color.fromRGBO(68, 217, 162, 1.0),
           ),
+          SizedBox(height: 20),
           Expanded(
             child: RichText(
               text: TextSpan(
