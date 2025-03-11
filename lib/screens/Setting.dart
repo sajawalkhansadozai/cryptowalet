@@ -45,13 +45,14 @@ class SettingPage extends StatelessWidget {
                 title: "Current Language",
                 subtitle: "Manage private key & Export wallet",
               ),
-              buildToken(context, "   ETH"), // Pass text without spaces
               SizedBox(height: 20),
+              buildToken(context, "   EN"), // Pass text without spaces
+              SizedBox(height: 30),
               RichTextSection(
                 title: "Show Private Key",
                 subtitle: "Tap and Hold to reveal and copy key",
               ),
-              SizedBox(height: 40),
+              SizedBox(height: 60),
               Padding(
                 padding: const EdgeInsets.only(left: 40),
                 child: Text(
@@ -74,7 +75,7 @@ class SettingPage extends StatelessWidget {
         vertical: 10,
       ), // Flexible padding
       child: Container(
-        height: 80,
+        height: 60,
         width: double.infinity,
         decoration: BoxDecoration(
           color: Colors.grey[200],
@@ -106,7 +107,6 @@ class SettingPage extends StatelessWidget {
   }
 }
 
-/// ✅ **RichTextSection Widget**
 class RichTextSection extends StatelessWidget {
   final String title;
   final String subtitle;
@@ -121,23 +121,25 @@ class RichTextSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 40),
-      child: RichText(
-        text: TextSpan(
-          style: const TextStyle(
-            color: Colors.black, // Fallback style
-            fontSize: 16, // Fallback font size
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Title
+          Text(
+            title,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          children: <TextSpan>[
-            TextSpan(
-              text: '$title\n\n',
-              style: const TextStyle(color: Colors.black, fontSize: 18),
-            ),
-            TextSpan(
-              text: subtitle,
-              style: const TextStyle(color: Colors.grey, fontSize: 14),
-            ),
-          ],
-        ),
+          const SizedBox(height: 5), // Add spacing between title and subtitle
+          // Subtitle
+          Text(
+            subtitle,
+            style: const TextStyle(color: Colors.grey, fontSize: 14),
+          ),
+        ],
       ),
     );
   }

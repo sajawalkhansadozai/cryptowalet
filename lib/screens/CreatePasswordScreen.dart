@@ -19,6 +19,7 @@ class _CreatePasswordScreenState extends State {
       TextEditingController();
   bool isButtonEnabled = false;
 
+  // Step Navigation Methods
   void _nextStep() {
     setState(() {
       if (_currentStep < 2) {
@@ -34,18 +35,18 @@ class _CreatePasswordScreenState extends State {
       } else {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => Starthome()),
+          MaterialPageRoute(builder: (context) => const Starthome()),
         );
       }
     });
   }
 
+  // Input Validation
   void _validateInput() {
-    setState(() {
-      final password = _passwordController.text;
-      final confirmPassword = _confirmPasswordController.text;
+    final password = _passwordController.text;
+    final confirmPassword = _confirmPasswordController.text;
 
-      // Enable the button only if passwords match, checkbox is ticked, and fields are not empty
+    setState(() {
       isButtonEnabled =
           password.isNotEmpty &&
           confirmPassword.isNotEmpty &&
@@ -54,198 +55,208 @@ class _CreatePasswordScreenState extends State {
     });
   }
 
+  // Build UI Components
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHeader(context, _previousStep),
+              SizedBox(height: screenHeight * 0.03),
+              _buildStepper(context, _currentStep),
+              SizedBox(height: screenHeight * 0.04),
+              _buildTitleSection(screenWidth, screenHeight),
+              SizedBox(height: screenHeight * 0.05),
+              _buildPasswordField(screenWidth, screenHeight),
+              SizedBox(height: screenHeight * 0.08),
+              _buildCreatePasswordButton(screenWidth, screenHeight),
+              SizedBox(height: screenHeight * 0.18),
+              _buildImportWalletText(screenWidth),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Header with Back Button
+  Widget _buildHeader(BuildContext context, VoidCallback onBack) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    return Row(
+      children: [
+        _buildBackButton(screenWidth, screenHeight, onBack),
+        SizedBox(width: screenWidth * 0.02),
+        _buildHeaderText(screenWidth),
+      ],
+    );
+  }
+
+  Widget _buildBackButton(
+    double screenWidth,
+    double screenHeight,
+    VoidCallback onBack,
+  ) {
+    return Padding(
+      padding: EdgeInsets.only(
+        top: screenHeight * 0.02,
+        left: screenWidth * 0.02,
+      ),
+      child: ElevatedButton(
+        onPressed: onBack,
+        style: ElevatedButton.styleFrom(
+          shape: const CircleBorder(),
+          padding: EdgeInsets.all(screenWidth * 0.03),
+          backgroundColor: Colors.white,
+          elevation: 0,
+        ),
+        child: Icon(
+          Icons.chevron_left,
+          color: Colors.black,
+          size: screenWidth * 0.07,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderText(double screenWidth) {
+    return Padding(
+      padding: EdgeInsets.only(top: screenWidth * 0.03),
+      child: Text(
+        "Create New Wallet",
+        style: TextStyle(
+          fontSize: screenWidth * 0.05,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+      ),
+    );
+  }
+
+  // Title Section
+  Widget _buildTitleSection(double screenWidth, double screenHeight) {
+    return Padding(
+      padding: EdgeInsets.only(left: screenWidth * 0.03),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(
+            "Create Password",
+            style: TextStyle(
+              fontSize: screenWidth * 0.06,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: screenHeight * 0.01),
+          Text(
+            "The Password will lock your wallet only on this device.",
+            style: TextStyle(color: Colors.grey, fontSize: screenWidth * 0.04),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Password Fields
+  Widget _buildPasswordField(double screenWidth, double screenHeight) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildTextField(
+            "New Password",
+            _passwordController,
+            screenWidth,
+            screenHeight,
+          ),
           SizedBox(height: screenHeight * 0.02),
-          buildHeader(context, _previousStep),
-          SizedBox(height: screenHeight * 0.03),
-          buildStepper(context, _currentStep),
+          _buildTextField(
+            "Confirm Password",
+            _confirmPasswordController,
+            screenWidth,
+            screenHeight,
+          ),
           SizedBox(height: screenHeight * 0.04),
-          Padding(
-            padding: EdgeInsets.only(left: screenWidth * 0.05),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Create Password",
-                  style: TextStyle(
-                    fontSize: screenWidth * 0.06,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: screenHeight * 0.01),
-                Text(
-                  "The Password will lock your wallet only on this device.",
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: screenWidth * 0.04,
-                  ),
-                ),
-              ],
-            ),
+          _buildCheckboxAndText(screenWidth),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTextField(
+    String labelText,
+    TextEditingController controller,
+    double screenWidth,
+    double screenHeight,
+  ) {
+    return TextField(
+      controller: controller,
+      obscureText: true,
+      onChanged: (value) => _validateInput(),
+      decoration: InputDecoration(
+        labelText: labelText,
+        labelStyle: TextStyle(
+          color: Colors.grey,
+          fontSize: screenWidth * 0.04,
+          fontFamily: 'Poppins',
+        ),
+        filled: true,
+        fillColor: Colors.grey[100],
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: screenWidth * 0.04,
+          vertical: screenHeight * 0.02,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(screenWidth * 0.01),
+          borderSide: BorderSide.none,
+        ),
+      ),
+    );
+  }
+
+  // Checkbox and Text
+  Widget _buildCheckboxAndText(double screenWidth) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.001),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Checkbox(
+            value: isChecked,
+            onChanged: (bool? newValue) {
+              setState(() {
+                isChecked = newValue ?? false;
+              });
+              _validateInput();
+            },
+            activeColor: const Color.fromRGBO(68, 217, 162, 1.0),
           ),
-          SizedBox(height: screenHeight * 0.05),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  onChanged: (value) => _validateInput(),
-                  decoration: InputDecoration(
-                    labelText: "New Password",
-                    labelStyle: TextStyle(
-                      color: Colors.grey,
-                      fontSize: screenWidth * 0.04,
-                    ),
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: screenWidth * 0.04,
-                      vertical: screenHeight * 0.015,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(screenWidth * 0.02),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-                SizedBox(height: screenHeight * 0.02),
-                TextField(
-                  controller: _confirmPasswordController,
-                  obscureText: true,
-                  onChanged: (value) => _validateInput(),
-                  decoration: InputDecoration(
-                    labelText: "Confirm Password",
-                    labelStyle: TextStyle(
-                      color: Colors.grey,
-                      fontSize: screenWidth * 0.04,
-                    ),
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: screenWidth * 0.04,
-                      vertical: screenHeight * 0.015,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(screenWidth * 0.02),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-                SizedBox(height: screenHeight * 0.04),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: isChecked,
-                      onChanged: (bool? newValue) {
-                        setState(() {
-                          isChecked = newValue ?? false;
-                        });
-                        _validateInput();
-                      },
-                      activeColor: const Color.fromRGBO(68, 217, 162, 1.0),
-                    ),
-                    Expanded(
-                      child: RichText(
-                        text: TextSpan(
-                          text:
-                              'I understand that this password cannot be recovered.',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: screenWidth * 0.035,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: ' Learn more',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: screenHeight * 0.06),
-                ElevatedButton(
-                  onPressed:
-                      isButtonEnabled
-                          ? () {
-                            _nextStep(); // Move to the next step
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SecreteRecoveryPhase(),
-                              ),
-                            );
-                          }
-                          : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        isButtonEnabled
-                            ? const Color.fromRGBO(68, 217, 162, 1.0)
-                            : Colors.grey,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: screenWidth * 0.1,
-                      vertical: screenHeight * 0.02,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(screenWidth * 0.02),
-                    ),
-                  ),
-                  child: Text(
-                    "Create Password",
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.04,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: screenHeight * 0.09),
-          Center(
+          Expanded(
             child: RichText(
               text: TextSpan(
-                text: 'Already have a wallet? ',
+                text: 'I understand that this password cannot be recovered.',
                 style: TextStyle(
                   color: Colors.grey,
                   fontSize: screenWidth * 0.035,
                 ),
                 children: [
                   TextSpan(
-                    text: 'Import Wallet',
+                    text: ' Learn more',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Colors.green,
-                      decoration: TextDecoration.underline,
+                      color: const Color.fromRGBO(68, 217, 162, 1.0),
                     ),
-                    recognizer:
-                        TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ImportScreen(),
-                              ),
-                            );
-                          },
                   ),
                 ],
               ),
@@ -256,121 +267,168 @@ class _CreatePasswordScreenState extends State {
     );
   }
 
-  /// Builds the header with a back button and title
-  Widget buildHeader(BuildContext context, VoidCallback onBack) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
-    return Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(
-            top: screenHeight * 0.03,
-            left: screenWidth * 0.05,
-          ),
-          child: ElevatedButton(
-            onPressed: onBack,
-            style: ElevatedButton.styleFrom(
-              shape: const CircleBorder(),
-              padding: EdgeInsets.all(screenWidth * 0.03),
-              backgroundColor: Colors.white,
-              elevation: 0,
+  // Create Password Button
+  Widget _buildCreatePasswordButton(double screenWidth, double screenHeight) {
+    return Center(
+      child: SizedBox(
+        width: screenWidth * 0.75, // Full width to match text fields
+        child: ElevatedButton(
+          onPressed:
+              isButtonEnabled
+                  ? () {
+                    _nextStep();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SecreteRecoveryPhase(),
+                      ),
+                    );
+                  }
+                  : null,
+          style: ElevatedButton.styleFrom(
+            backgroundColor:
+                isButtonEnabled
+                    ? const Color.fromRGBO(68, 217, 162, 1.0)
+                    : Colors.grey,
+            foregroundColor: Colors.white,
+            padding: EdgeInsets.symmetric(
+              horizontal:
+                  screenWidth * 0.04, // Matches text field horizontal padding
+              vertical:
+                  screenHeight * 0.023, // Matches text field vertical padding
             ),
-            child: Icon(
-              Icons.chevron_left,
-              color: Colors.black,
-              size: screenWidth * 0.07,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(screenWidth * 0.02),
             ),
           ),
-        ),
-        SizedBox(width: screenWidth * 0.02),
-        Padding(
-          padding: EdgeInsets.only(top: screenHeight * 0.03),
           child: Text(
-            "Create New Wallet",
+            "Create Password",
             style: TextStyle(
-              fontSize: screenWidth * 0.05,
+              fontSize: screenWidth * 0.04,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
             ),
           ),
         ),
-      ],
+      ),
     );
   }
 
-  /// Builds the stepper UI
-  Widget buildStepper(BuildContext context, int currentStep) {
+  // Import Wallet Text
+  Widget _buildImportWalletText(double screenWidth) {
+    return Center(
+      child: RichText(
+        text: TextSpan(
+          text: 'Already have a wallet? ',
+          style: TextStyle(color: Colors.grey, fontSize: screenWidth * 0.035),
+          children: [
+            TextSpan(
+              text: 'Import Wallet',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: const Color.fromRGBO(68, 217, 162, 1.0),
+              ),
+              recognizer:
+                  TapGestureRecognizer()
+                    ..onTap = () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ImportScreen(),
+                        ),
+                      );
+                    },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Stepper UI
+  Widget _buildStepper(BuildContext context, int currentStep) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
+      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // Stepper Line
-          Row(
-            children: List.generate(2, (index) {
-              return Expanded(
-                child: Container(
-                  height: screenHeight * 0.006,
-                  color:
-                      currentStep > index
-                          ? const Color.fromRGBO(68, 217, 162, 1.0)
-                          : const Color.fromARGB(255, 221, 216, 216),
-                ),
-              );
-            }),
-          ),
-          // Stepper Circles
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(3, (index) {
-              return GestureDetector(
-                onTap: null, // Disable direct tapping on stepper circles
-                child: Container(
-                  width: screenWidth * 0.08,
-                  height: screenWidth * 0.08,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color:
-                          currentStep >= index
-                              ? const Color.fromRGBO(68, 217, 162, 1.0)
-                              : Colors.grey,
-                      width: screenWidth * 0.008,
-                    ),
-                    color:
-                        currentStep > index
-                            ? const Color.fromRGBO(68, 217, 162, 1.0)
-                            : Colors.white,
-                  ),
-                  child:
-                      currentStep > index
-                          ? Icon(
-                            Icons.check,
-                            color: Colors.white,
-                            size: screenWidth * 0.04,
-                          )
-                          : currentStep == index
-                          ? Center(
-                            child: Container(
-                              width: screenWidth * 0.02,
-                              height: screenWidth * 0.02,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color.fromRGBO(68, 217, 162, 1.0),
-                              ),
-                            ),
-                          )
-                          : null,
-                ),
-              );
-            }),
-          ),
+          _buildStepperLine(currentStep, screenWidth, screenHeight),
+          _buildStepperCircles(currentStep, screenWidth),
         ],
       ),
+    );
+  }
+
+  Widget _buildStepperLine(
+    int currentStep,
+    double screenWidth,
+    double screenHeight,
+  ) {
+    return Row(
+      children: List.generate(2, (index) {
+        return Expanded(
+          child: Container(
+            height: screenHeight * 0.003,
+            color:
+                currentStep > index
+                    ? const Color.fromRGBO(68, 217, 162, 1.0)
+                    : const Color.fromARGB(255, 221, 216, 216),
+          ),
+        );
+      }),
+    );
+  }
+
+  Widget _buildStepperCircles(int currentStep, double screenWidth) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: List.generate(3, (index) {
+        return GestureDetector(
+          onTap: null,
+          child: Container(
+            width: screenWidth * 0.08,
+            height: screenWidth * 0.08,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color:
+                    currentStep >= index
+                        ? const Color.fromRGBO(68, 217, 162, 1.0)
+                        : Colors.grey.shade300,
+                width:
+                    currentStep >= index
+                        ? screenWidth * 0.016
+                        : screenWidth * 0.016,
+              ),
+              color:
+                  currentStep > index
+                      ? const Color.fromRGBO(68, 217, 162, 1.0)
+                      : Colors.white,
+            ),
+            child:
+                currentStep > index
+                    ? Icon(
+                      Icons.check,
+                      color: Colors.white,
+                      size: screenWidth * 0.04,
+                    )
+                    : currentStep == index
+                    ? Center(
+                      child: Container(
+                        width: screenWidth * 0.03,
+                        height: screenWidth * 0.03,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color.fromRGBO(68, 217, 162, 1.0),
+                        ),
+                      ),
+                    )
+                    : null,
+          ),
+        );
+      }),
     );
   }
 }

@@ -105,7 +105,13 @@ class _OpenwalletState extends State<Openwallet> {
               ),
               const Spacer(), // Push remaining content to the bottom
               const SizedBox(height: 100), // Add spacing
-
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Divider(
+                  color: Color.fromRGBO(68, 217, 162, 1), // Set opacity to 0.1
+                  thickness: 1.3,
+                ),
+              ),
               ListTile(
                 leading: const Icon(Icons.settings_outlined),
                 title: const Text('Settings'),
@@ -128,12 +134,16 @@ class _OpenwalletState extends State<Openwallet> {
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Container(
+                  height: 50,
                   decoration: BoxDecoration(
-                    color: Colors.redAccent,
+                    color: Color(0xFFE74C3C),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: ListTile(
-                    leading: const Icon(Icons.logout, color: Colors.white),
+                    leading: Transform.rotate(
+                      angle: 3.14, // Rotate by 180 degrees (π radians)
+                      child: Icon(Icons.logout, color: Colors.white),
+                    ),
                     title: const Text(
                       'Logout',
                       style: TextStyle(color: Colors.white),
@@ -218,7 +228,7 @@ class _OpenwalletState extends State<Openwallet> {
                     child: Text(
                       "Ethereum",
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Color.fromRGBO(68, 217, 162, 1.0),
                       ),
@@ -271,7 +281,7 @@ class _OpenwalletState extends State<Openwallet> {
             borderRadius: BorderRadius.circular(screenWidth * 0.02),
           ),
           child: SizedBox(
-            width: double.infinity,
+            width: 380,
             height: screenHeight * 0.5,
             child: Padding(
               padding: EdgeInsets.all(screenWidth * 0.05),
@@ -280,15 +290,12 @@ class _OpenwalletState extends State<Openwallet> {
                 children: [
                   Text(
                     "Receive",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: screenWidth * 0.08,
-                    ),
+                    style: TextStyle(fontSize: screenWidth * 0.04),
                   ),
                   SizedBox(height: screenHeight * 0.01),
                   Text(
                     "Scan QR code to Receive your payment",
-                    style: TextStyle(fontSize: screenWidth * 0.04),
+                    style: TextStyle(fontSize: screenWidth * 0.03),
                   ),
                   SizedBox(height: screenHeight * 0.02),
                   Image.asset(
@@ -399,6 +406,7 @@ class _OpenwalletState extends State<Openwallet> {
   /// ✅ **Reusable Function for Tabs (Token & Collection)**
   Widget buildTabButton({required int index, required String text}) {
     bool isSelected = selectedTabIndex == index;
+    final screenWidth = MediaQuery.of(context).size.width; // Get screen width
 
     return GestureDetector(
       onTap: () => setState(() => selectedTabIndex = index),
@@ -415,87 +423,103 @@ class _OpenwalletState extends State<Openwallet> {
                       : Colors.black,
             ),
           ),
-          if (isSelected)
-            Container(
-              width: 50,
-              height: 4,
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(68, 217, 162, 1.0),
-                borderRadius: BorderRadius.circular(2),
-              ),
+          // Conditionally render either the grey line or the green line
+          Container(
+            width: screenWidth * 0.5, // 50% of screen width
+            height: 5, // Height of the line
+            decoration: BoxDecoration(
+              color:
+                  isSelected
+                      ? const Color.fromRGBO(
+                        68,
+                        217,
+                        162,
+                        1.0,
+                      ) // Green line when selected
+                      : Colors.grey.withOpacity(
+                        0.5,
+                      ), // Grey line when not selected
+              borderRadius: BorderRadius.circular(2),
             ),
+          ),
         ],
       ),
     );
   }
 
   Widget buildToken(BuildContext context) {
-    return Center(
-      child: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 40, right: 40),
-            child: Container(
-              width: double.infinity,
-              height: 60,
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(10),
+    return Padding(
+      padding: const EdgeInsets.only(top: 40),
+      child: Center(
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 40, right: 40),
+              child: Container(
+                width: double.infinity,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
-          ),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 10, left: 50),
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundImage: AssetImage("assets/profile_image.png"),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, left: 50),
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundImage: AssetImage("assets/profile_image.png"),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "0.00THET \n0USD",
-                  style: TextStyle(color: Colors.grey),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "0.00THET \n0USD",
+                    style: TextStyle(color: Colors.grey),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 160),
-                child: Icon(Icons.chevron_right, color: Colors.grey),
-              ),
-            ],
-          ),
-        ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 160),
+                  child: Icon(Icons.chevron_right, color: Colors.grey),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
   /// ✅ **Collection Component**
   Widget buildCollection(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          Text(
-            "Don't you See your NFT??",
-            style: TextStyle(color: const Color.fromARGB(255, 211, 204, 204)),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ImportNFT()),
-              );
-            },
-            child: const Text(
-              "Import NFT",
-              style: TextStyle(
-                color: Color.fromRGBO(68, 217, 162, 1.0),
-                fontSize: 10,
+    return Padding(
+      padding: const EdgeInsets.only(top: 40),
+      child: Center(
+        child: Column(
+          children: [
+            Text(
+              "Don't you See your NFT??",
+              style: TextStyle(color: const Color.fromARGB(255, 211, 204, 204)),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ImportNFT()),
+                );
+              },
+              child: const Text(
+                "Import NFT",
+                style: TextStyle(
+                  color: Color.fromRGBO(68, 217, 162, 1.0),
+                  fontSize: 10,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

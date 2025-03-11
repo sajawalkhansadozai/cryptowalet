@@ -72,11 +72,23 @@ class ImportCustomToken extends StatelessWidget {
             SizedBox(height: screenHeight * 0.04), // 4% of screen height
             // Borderless TextFields with Light Grey Background
             _buildTextField("Token Name", screenWidth, screenHeight),
-            SizedBox(height: screenHeight * 0.04), // 4% of screen height
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  "0/42",
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: screenHeight * 0.03), // 4% of screen height
             _buildTextField("Token Symbol", screenWidth, screenHeight),
-            SizedBox(height: screenHeight * 0.04), // 4% of screen height
+            SizedBox(height: screenHeight * 0.02), // 4% of screen height
             _buildTextField("Token Decimal", screenWidth, screenHeight),
-            SizedBox(height: screenHeight * 0.04), // 4% of screen height
+            SizedBox(height: screenHeight * 0.08), // 4% of screen height
             // Import Button (Full Width)
             SizedBox(
               width: double.infinity,
@@ -132,6 +144,7 @@ class ImportCustomToken extends StatelessWidget {
                   "Cancel",
                   style: TextStyle(
                     fontSize: screenWidth * 0.04,
+                    color: const Color.fromRGBO(68, 217, 162, 1.0),
                   ), // Responsive font size
                 ),
               ),
@@ -149,26 +162,26 @@ class ImportCustomToken extends StatelessWidget {
     double screenHeight,
   ) {
     return Container(
-      height: screenHeight * 0.1, // 10% of screen height
+      height: screenHeight * 0.07, // Reduced from 10% → 7% of screen height
       padding: EdgeInsets.symmetric(
         horizontal: screenWidth * 0.03,
-      ), // 3% horizontal padding
+        vertical: screenHeight * 0.005, // Add minimal vertical padding
+      ),
       decoration: BoxDecoration(
-        color: Colors.grey[200], // Light grey background
-        borderRadius: BorderRadius.circular(
-          screenWidth * 0.02,
-        ), // Responsive border radius
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(screenWidth * 0.02),
       ),
       child: TextField(
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: TextStyle(
-            fontSize: screenWidth * 0.04,
-          ), // Responsive font size
+            fontSize: screenWidth * 0.035, // Reduced font size
+            color: Colors.grey,
+          ),
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(
-            vertical: screenHeight * 0.015,
-          ), // Responsive padding
+            vertical: screenHeight * 0.008, // Reduced content padding
+          ),
         ),
       ),
     );

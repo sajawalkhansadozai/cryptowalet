@@ -1,5 +1,5 @@
+import 'dart:math';
 import 'package:cryptowalet/screens/ImportCustomToken.dart';
-
 import 'package:cryptowalet/screens/TransactionHistory.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +54,7 @@ class SendPage extends StatelessWidget {
                                       style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.normal,
-                                        color: Colors.grey[200],
+                                        color: Colors.grey,
                                         decoration: TextDecoration.underline,
                                       ),
                                       recognizer:
@@ -80,36 +80,26 @@ class SendPage extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 30),
                         child: Text(
                           "From",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
+                          style: TextStyle(fontSize: 16, color: Colors.black),
                         ),
                       ),
-                      const SizedBox(height: 10), // Add spacing
                       buildToken(context),
-
                       const SizedBox(height: 20), // Add spacing
                       // ✅ "To" Label Aligned to the Left
                       Padding(
                         padding: const EdgeInsets.only(left: 30),
                         child: Text(
                           "To",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
+                          style: TextStyle(fontSize: 16, color: Colors.black),
                         ),
                       ),
-                      const SizedBox(height: 10), // Add spacing
                       // ✅ TextField with Image and Label
                       Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: CustomTextField(
                           labelText: "Search public address here",
-                          prefixIcon: Padding(
+
+                          suffixIcon: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: SizedBox(
                               height: 30,
@@ -124,20 +114,19 @@ class SendPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 40),
                       Divider(
-                        color: Colors.grey[350], // Color of the line
+                        color: Colors.grey[400], // Color of the line
                         thickness: 1, // Thickness of the line
                         height: 20, // Spacing above & below the line
                       ),
                       const SizedBox(height: 20),
-
                       // ✅ Reusable TextFields Below Divider
                       Padding(
-                        padding: const EdgeInsets.only(left: 30, right: 30),
-                        child: CustomTextField(labelText: "Token Number"),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: CustomTextField(labelText: "Token Name"),
                       ),
                       const SizedBox(height: 20),
                       Padding(
-                        padding: const EdgeInsets.only(left: 30, right: 30),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         child: CustomTextField(labelText: "Token ID"),
                       ),
                       const SizedBox(
@@ -148,7 +137,6 @@ class SendPage extends StatelessWidget {
                 ),
               ),
             ),
-
             // ✅ Button fixed at the bottom
             Padding(
               padding: const EdgeInsets.all(16), // Padding around the button
@@ -172,7 +160,7 @@ class SendPage extends StatelessWidget {
                   foregroundColor: Colors.white, // Text color
                   minimumSize: Size(
                     double.infinity,
-                    50,
+                    60,
                   ), // Full width, fixed height
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10), // Rounded corners
@@ -212,7 +200,13 @@ class CustomButton extends StatelessWidget {
         side: BorderSide(color: Color.fromRGBO(68, 217, 162, 1.0), width: 1),
         minimumSize: Size(120, 45),
       ),
-      child: Text("Cancel", style: TextStyle(fontSize: 14)),
+      child: Text(
+        "Cancel",
+        style: TextStyle(
+          fontSize: 14,
+          color: Color.fromRGBO(68, 217, 162, 1.0),
+        ),
+      ),
     );
   }
 }
@@ -220,9 +214,9 @@ class CustomButton extends StatelessWidget {
 /// ✅ **Token Component**
 Widget buildToken(BuildContext context) {
   return Padding(
-    padding: const EdgeInsets.all(30),
+    padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
     child: Container(
-      height: 80,
+      height: 60,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.grey[200],
@@ -243,9 +237,16 @@ Widget buildToken(BuildContext context) {
             style: TextStyle(fontSize: 16, color: Colors.grey),
           ),
           const Spacer(),
-          const Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: Icon(Icons.arrow_forward_ios, size: 18, color: Colors.grey),
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: Transform.rotate(
+              angle: pi / 2, // Rotate by -90 degrees (clockwise)
+              child: Icon(
+                Icons.arrow_forward_ios,
+                size: 18,
+                color: Colors.grey,
+              ),
+            ),
           ),
         ],
       ),
@@ -257,13 +258,20 @@ Widget buildToken(BuildContext context) {
 class CustomTextField extends StatelessWidget {
   final String labelText;
   final Widget? prefixIcon;
+  final Widget? suffixIcon; // Add this line to define the suffixIcon parameter
 
-  const CustomTextField({super.key, required this.labelText, this.prefixIcon});
+  const CustomTextField({
+    super.key,
+    required this.labelText,
+    this.prefixIcon,
+    this.suffixIcon, // Add this line to include suffixIcon in the constructor
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
+      height: 60,
       decoration: BoxDecoration(
         color: Colors.grey.shade200, // Light grey background
         borderRadius: BorderRadius.circular(10),
@@ -272,7 +280,9 @@ class CustomTextField extends StatelessWidget {
         decoration: InputDecoration(
           labelText: labelText, // Label text
           prefixIcon: prefixIcon, // Optional prefix icon
+          suffixIcon: suffixIcon, // Add this line to include suffixIcon
           border: InputBorder.none, // Remove default underline
+          labelStyle: TextStyle(fontSize: 14, color: Colors.grey),
           contentPadding: const EdgeInsets.all(
             15,
           ), // Padding inside the text field

@@ -24,22 +24,57 @@ class AmountPage extends StatelessWidget {
                         ),
                     icon: const Icon(Icons.arrow_back),
                   ),
+
                   const SizedBox(width: 10),
-                  const Text(
-                    "Amount",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: RichText(
+                        textAlign: TextAlign.start,
+                        text: TextSpan(
+                          text: "Amount", // The main text
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: " ETH", // Additional styled text
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.grey,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 120),
+                    padding: const EdgeInsets.only(left: 100),
                     child: Custombutton(context),
                   ),
                 ],
               ),
               SizedBox(height: 30),
+              Padding(
+                padding: const EdgeInsets.only(right: 30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      "Use Max",
+                      style: TextStyle(
+                        color: const Color.fromRGBO(68, 217, 162, 1.0),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               buildToken(context, 'ETH'),
               SizedBox(height: 30),
               Center(
@@ -47,7 +82,7 @@ class AmountPage extends StatelessWidget {
                   "0",
                   style: TextStyle(
                     color: Color.fromRGBO(68, 217, 162, 1.0),
-                    fontSize: 60,
+                    fontSize: 40,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -78,7 +113,7 @@ class AmountPage extends StatelessWidget {
                     foregroundColor: Colors.white, // Text color
                     minimumSize: Size(
                       double.infinity,
-                      50,
+                      60,
                     ), // Full width, fixed height
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
@@ -110,7 +145,7 @@ class AmountPage extends StatelessWidget {
         foregroundColor: Colors.black,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         side: BorderSide(color: Color.fromRGBO(68, 217, 162, 1.0), width: 1),
-        minimumSize: Size(120, 45),
+        minimumSize: Size(110, 45),
       ),
       child: Text("Cancel", style: TextStyle(fontSize: 14)),
     );
@@ -125,7 +160,7 @@ Widget buildToken(BuildContext context, String text) {
       vertical: 10,
     ), // Flexible padding
     child: Container(
-      height: 80,
+      height: 60,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.grey[200],
@@ -146,7 +181,7 @@ Widget buildToken(BuildContext context, String text) {
           const Spacer(),
           const Padding(
             padding: EdgeInsets.only(right: 10),
-            child: Icon(Icons.expand_more, size: 18, color: Colors.grey),
+            child: Icon(Icons.expand_more, size: 25, color: Colors.grey),
           ),
         ],
       ),

@@ -10,132 +10,126 @@ class Starthome extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    // Common button style
-    ButtonStyle commonButtonStyle({
-      required Color backgroundColor,
-      required Color foregroundColor,
-    }) {
-      return ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor,
-        foregroundColor: foregroundColor,
-        elevation: 10,
-        shadowColor: Colors.black,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      );
-    }
-
     return Scaffold(
       backgroundColor: const Color.fromRGBO(68, 217, 162, 1.0),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // Centers content
-          crossAxisAlignment: CrossAxisAlignment.start, // Aligns text left
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildHeader(screenWidth, screenHeight),
+          SizedBox(height: 100),
+          _buildImage(screenWidth, screenHeight),
+          SizedBox(height: 100),
+          _buildButtons(context, screenWidth, screenHeight),
+        ],
+      ),
+    );
+  }
+
+  // Header Section
+  Widget _buildHeader(double screenWidth, double screenHeight) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 70, left: 33),
+      child: RichText(
+        text: TextSpan(
           children: [
-            RichText(
-              text: TextSpan(
-                children: [
-                  const TextSpan(
-                    text: "Wallet Setup\n",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextSpan(
-                    text: "Import an existing wallet or create a new wallet",
-                    style: TextStyle(
-                      // ignore: deprecated_member_use
-                      color: Colors.white.withOpacity(0.8),
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
+            const TextSpan(
+              text: "Wallet Setup\n",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 50),
-            // Centered Image
-            Center(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.asset(
-                  "assets/fourth_image.png",
-                  width: screenWidth * 0.8,
-                  height: screenHeight * 0.4,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            const SizedBox(height: 50),
-            // Buttons
-            Center(
-              child: Column(
-                children: [
-                  SizedBox(
-                    width: 300,
-                    height: 55,
-                    child: ElevatedButton(
-                      onPressed:
-                          () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ImportScreen(),
-                            ),
-                          ),
-                      style: commonButtonStyle(
-                        backgroundColor: Colors.white,
-                        foregroundColor: const Color.fromRGBO(
-                          68,
-                          217,
-                          162,
-                          1.0,
-                        ),
-                      ),
-                      child: const Text(
-                        "Import Existing",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    width: 300,
-                    height: 55,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CreateWalletScreen(),
-                          ),
-                        );
-                      },
-                      style: commonButtonStyle(
-                        backgroundColor: const Color.fromRGBO(
-                          68,
-                          217,
-                          162,
-                          1.0,
-                        ),
-                        foregroundColor: Colors.white,
-                      ),
-                      child: const Text(
-                        "Create one",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+            WidgetSpan(child: SizedBox(height: 30)),
+            TextSpan(
+              text: "Import an existing wallet or create \na new wallet",
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.8),
+                fontSize: 18,
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  // Image Section
+  Widget _buildImage(double screenWidth, double screenHeight) {
+    return Center(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Image.asset(
+          "assets/fourth_image.png",
+          width: screenWidth * 1,
+          height: screenHeight * 0.4,
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  // Buttons Section
+  Widget _buildButtons(
+    BuildContext context,
+    double screenWidth,
+    double screenHeight,
+  ) {
+    return Center(
+      child: Column(
+        children: [
+          _buildButton(
+            context,
+            "Import Existing",
+            Colors.white,
+            const Color.fromRGBO(68, 217, 162, 1.0),
+            () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ImportScreen()),
+            ),
+          ),
+          const SizedBox(height: 20),
+          _buildButton(
+            context,
+            "Create New",
+            const Color.fromRGBO(68, 217, 162, 1.0),
+            Colors.white,
+            () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CreateWalletScreen()),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Reusable Button Function
+  Widget _buildButton(
+    BuildContext context,
+    String text,
+    Color backgroundColor,
+    Color foregroundColor,
+    VoidCallback onPressed,
+  ) {
+    return SizedBox(
+      width: 350,
+      height: 65,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: backgroundColor,
+          foregroundColor: foregroundColor,
+          elevation: 5,
+          shadowColor: Colors.black,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
     );

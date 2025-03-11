@@ -25,17 +25,33 @@ class SwapPage extends StatelessWidget {
                         ),
                     icon: const Icon(Icons.arrow_back),
                   ),
-                  const SizedBox(width: 10),
-                  const Text(
-                    "Swap",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                  const SizedBox(width: 5),
+                  Expanded(
+                    child: RichText(
+                      textAlign: TextAlign.start,
+                      text: TextSpan(
+                        text: "Swap", // The main text
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: " ETH", // Additional styled text
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 140),
+                    padding: const EdgeInsets.only(left: 110),
                     child: Custombutton(context),
                   ),
                 ],
@@ -48,7 +64,7 @@ class SwapPage extends StatelessWidget {
                   "0",
                   style: TextStyle(
                     color: Color.fromRGBO(68, 217, 162, 1.0),
-                    fontSize: 60,
+                    fontSize: 40,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -80,7 +96,7 @@ class SwapPage extends StatelessWidget {
                     foregroundColor: Colors.white, // Text color
                     minimumSize: Size(
                       double.infinity,
-                      50,
+                      60,
                     ), // Full width, fixed height
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
@@ -127,7 +143,7 @@ Widget buildToken(BuildContext context, String text) {
       vertical: 10,
     ), // Flexible padding
     child: Container(
-      height: 80,
+      height: 60,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.grey[200],
@@ -142,13 +158,14 @@ Widget buildToken(BuildContext context, String text) {
               style: const TextStyle(
                 fontSize: 16,
                 color: Color.fromARGB(255, 122, 122, 122),
+                fontWeight: FontWeight.normal,
               ),
             ),
           ),
           const Spacer(),
           const Padding(
             padding: EdgeInsets.only(right: 10),
-            child: Icon(Icons.expand_more, size: 18, color: Colors.grey),
+            child: Icon(Icons.expand_more, size: 25, color: Colors.grey),
           ),
         ],
       ),

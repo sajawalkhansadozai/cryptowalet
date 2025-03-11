@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class ImportNFT extends StatelessWidget {
   const ImportNFT({super.key});
-
   @override
   Widget build(BuildContext context) {
     // Get screen dimensions for responsiveness
@@ -21,6 +20,7 @@ class ImportNFT extends StatelessWidget {
           "Import NFT",
           style: TextStyle(
             fontSize: screenWidth * 0.05,
+            fontWeight: FontWeight.bold,
           ), // Responsive font size
         ),
       ),
@@ -34,13 +34,25 @@ class ImportNFT extends StatelessWidget {
             SizedBox(height: screenHeight * 0.04), // 4% of screen height
             // Token Name TextField
             _buildTextField("Token Name", screenWidth, screenHeight),
-            SizedBox(height: screenHeight * 0.04), // 4% of screen height
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  "0/42",
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: screenHeight * 0.03), // 4% of screen height
             // Token Symbol TextField
             _buildTextField("Token Symbol", screenWidth, screenHeight),
-            SizedBox(height: screenHeight * 0.04), // 4% of screen height
+            SizedBox(height: screenHeight * 0.02), // 4% of screen height
             // Contract Address TextField
             _buildTextField("Contract Address", screenWidth, screenHeight),
-            SizedBox(height: screenHeight * 0.04), // 4% of screen height
+            SizedBox(height: screenHeight * 0.06), // 4% of screen height
             // Import Button (Full Width)
             SizedBox(
               width: double.infinity,
@@ -116,26 +128,25 @@ class ImportNFT extends StatelessWidget {
     double screenHeight,
   ) {
     return Container(
-      height: screenHeight * 0.1, // 10% of screen height
+      height: screenHeight * 0.07, // Reduced from 0.1 to 0.07 (30% smaller)
       padding: EdgeInsets.symmetric(
         horizontal: screenWidth * 0.03,
-      ), // 3% horizontal padding
+        vertical: screenHeight * 0.002, // Add minimal vertical padding
+      ),
       decoration: BoxDecoration(
-        color: Colors.grey[200], // Light grey background
-        borderRadius: BorderRadius.circular(
-          screenWidth * 0.02,
-        ), // Responsive border radius
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(screenWidth * 0.01),
       ),
       child: TextField(
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: TextStyle(
-            fontSize: screenWidth * 0.04,
-          ), // Responsive font size
+            fontSize: screenWidth * 0.035, // Slightly smaller text
+          ),
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(
-            vertical: screenHeight * 0.015,
-          ), // Responsive padding
+            vertical: screenHeight * 0.008, // Reduced content padding
+          ),
         ),
       ),
     );

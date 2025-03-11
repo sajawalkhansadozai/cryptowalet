@@ -28,6 +28,7 @@ class _CreateWalletScreenState extends State<CreateWalletScreen> {
           style: TextStyle(
             fontSize: MediaQuery.of(context).size.width * 0.05,
             color: Colors.black,
+            fontFamily: 'Poppins',
           ),
         );
     }

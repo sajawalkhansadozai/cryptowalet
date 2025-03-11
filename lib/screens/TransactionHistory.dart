@@ -80,11 +80,11 @@ Widget buildToken(BuildContext context) {
   return Padding(
     padding: const EdgeInsets.all(10),
     child: Container(
-      height: 80,
+      height: 60,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: Row(
         children: [
@@ -97,7 +97,7 @@ Widget buildToken(BuildContext context) {
           ),
           const SizedBox(width: 10),
           const Text(
-            "Account no 1 \nBalance 0.0",
+            "50.00THETA \n50\$",
             style: TextStyle(fontSize: 16, color: Colors.grey),
           ),
           const Spacer(),

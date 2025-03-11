@@ -46,7 +46,6 @@ Widget buildHeader(BuildContext context) {
   );
 }
 
-/// 🔹 Builds the stepper UI
 Widget buildStepper(
   BuildContext context,
   int currentStep,
@@ -68,7 +67,7 @@ Widget buildStepper(
           children: List.generate(2, (index) {
             return Expanded(
               child: Container(
-                height: screenHeight * 0.006, // 0.6% of screen height
+                height: screenHeight * 0.003, // 0.6% of screen height
                 color:
                     currentStep > index
                         ? const Color.fromRGBO(68, 217, 162, 1.0)
@@ -92,8 +91,13 @@ Widget buildStepper(
                     color:
                         currentStep >= index
                             ? const Color.fromRGBO(68, 217, 162, 1.0)
-                            : Colors.grey,
-                    width: screenWidth * 0.008, // Responsive border width
+                            : Colors.grey.shade300,
+                    width:
+                        currentStep >= index
+                            ? screenWidth *
+                                0.016 // Double width for active circles
+                            : screenWidth *
+                                0.016, // Normal width for inactive circles
                   ),
                   color:
                       currentStep > index
@@ -116,8 +120,8 @@ Widget buildStepper(
                         ? Center(
                           // Active step - with small dot
                           child: Container(
-                            width: screenWidth * 0.02, // 2% of screen width
-                            height: screenWidth * 0.02, // 2% of screen width
+                            width: screenWidth * 0.03, // 2% of screen width
+                            height: screenWidth * 0.03, // 2% of screen width
                             decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               color: Color.fromRGBO(68, 217, 162, 1.0),

@@ -130,7 +130,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               }
             },
             child: Text(
-              isLastPage ? "Get Started" : "Skip",
+              isLastPage ? "SKip" : "Skip",
               style: TextStyle(
                 fontSize: screenWidth * 0.05,
                 color: Color.fromRGBO(68, 217, 162, 1.0),

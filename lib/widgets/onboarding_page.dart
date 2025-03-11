@@ -5,7 +5,6 @@ class OnboardingPage extends StatelessWidget {
   final double height;
   final String imagePath;
   final String text;
-
   const OnboardingPage({
     super.key,
     required this.width,
@@ -13,7 +12,6 @@ class OnboardingPage extends StatelessWidget {
     required this.imagePath,
     required this.text,
   });
-
   @override
   Widget build(BuildContext context) {
     // Get screen dimensions for responsiveness
